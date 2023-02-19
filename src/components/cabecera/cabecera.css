@@ -1,0 +1,13 @@
+.separar{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    font-size: large;
+    font-weight: bold;
+}
+.separar>*{
+    margin-right: 1.5rem;
+}
+nav img{
+    width: 5rem;
+    height: 5rem;
+}
