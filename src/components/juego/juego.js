@@ -14,7 +14,7 @@ function Juego() {
 
     const [pokemonExiste, setPokemonExiste] = useState(false);//booleano para saber si el pokemon existe
     const [juegoTerminado, setJuegoTerminado] = useState(false);//booleano para saber si el juego termino
-    const [juegoGanado, setJuegoGanado] = useState(false);//booleano para saber si el 
+    const [juegoGanado, setJuegoGanado] = useState(null);//booleano para saber si el 
 
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -53,12 +53,12 @@ function Juego() {
     function inicializarTodo() {
         setPokemonExiste(false);
         setJuegoTerminado(false);
-        setJuegoGanado(false);
         setPokemon([]);
         setInputPokemon('');
         setArrayIntentos([]);
         setIntentos(7);
         getRandPokemon(listaPokemon);
+        setJuegoGanado(null);
     }
     //para el boton de reset
     const [hovered, setHovered] = useState(false);
@@ -110,6 +110,7 @@ function Juego() {
             let url = listaPokemon.find(pokemon => pokemon.name === inputPokemon.toLowerCase()).url;
             cargarSinglePokemon(url, false);
             setJuegoTerminado(true);
+            setJuegoGanado(true);
 
 
         } else {
@@ -118,6 +119,7 @@ function Juego() {
             cargarSinglePokemon(url, false);
             if (intentos <= 1) {
                 setJuegoTerminado(true);
+                setJuegoGanado(false);
             }
         }
     }
@@ -158,7 +160,19 @@ function Juego() {
                     <h3>Name</h3>
                 </li>
             </ul>
-            {arrayIntentos.map((pokemonInvitado, index) => <Comprobacion key={index} pokemon={pokemon.escogido} invitado={pokemonInvitado} />)}
+            {arrayIntentos.map((pokemonInvitado, index) => <Comprobacion key={index} pokemon={pokemon.escogido} invitado={pokemonInvitado} ganado={juegoGanado}/>)}
+            {juegoGanado ?  <div className="alert alert-success" role="alert">
+            <h4 className="alert-heading">¡Has ganado!</h4>
+            <p>¡Enhorabuena! Has acertado todos los datos del pokemon.</p>
+            <hr />
+            <p className="mb-0">¡Vuelve a jugar!</p>
+        </div> : juegoGanado === false ? <div className="alert alert-danger" role="alert">
+            <h4 className="alert-heading">¡Has perdido!</h4>
+            <p>¡Lo siento! Has perdido todos los intentos.</p>
+            <hr />
+            <p className="mb-0">¡Vuelve a jugar!</p>
+        </div> : null
+        }
             {juegoTerminado ? <div className='row justify-content-center mt-5'>
                 <div className='col-6'>
                     <h1>El pokemon era <span className='primeraMayus'>{pokemon.escogido.name}</span></h1>

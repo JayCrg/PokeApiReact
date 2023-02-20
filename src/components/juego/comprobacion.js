@@ -98,15 +98,6 @@ function Comprobacion(props) {
         return generacion;
     }
     
-    for (let items of arrayResultados) {
-        console.log(arrayResultados)
-        if (items != correct) {
-            setVictoria(false);
-            return
-        }
-    }
-    return setVictoria(true);
-    
     return(
         <>
         <ul className="nav nav-pills nav-fill mt-3">
@@ -129,13 +120,7 @@ function Comprobacion(props) {
                     <h5 className='primeraMayus'>{props.invitado.name}</h5>
                 </li>
          </ul> 
-         {victoria ?  <div className="alert alert-success" role="alert">
-            <h4 className="alert-heading">¡Has ganado!</h4>
-            <p>¡Enhorabuena! Has acertado todos los datos del pokemon.</p>
-            <hr />
-            <p className="mb-0">¡Vuelve a jugar!</p>
-        </div> : null
-        }
+
         </>
     )
 }
