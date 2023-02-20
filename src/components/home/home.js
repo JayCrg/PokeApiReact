@@ -47,17 +47,21 @@ function Home() {
                 </Col>
             </Row>
             <Row>
-                <Col className='mt-3 col-2' />
-                <Col className='mt-3 col-8'>
-                    <Card className="d-flex flex-row w-100">
-                        <Card.Img variant="botton" src={require("../../images/poke4.webp")} className='w-25' />
-                        <Card.Body>
-                            <Card.Title>What is Pokemon?</Card.Title>
-                            <Card.Text>
-                                Pokémon (ポケモン, Pokemon?, [pokeːˈmon]) is a Japanese media franchise managed by The Pokémon Company, a company founded by Nintendo, Game Freak, and Creatures. The franchise was created by Satoshi Tajiri in 1995, and is centered on fictional creatures called "Pokémon", which humans, known as Pokémon Trainers, catch and train to battle each other for sport. The franchise has expanded into other media, including animated television shows, films, manga, trading card games, and video games. The Pokémon franchise is the second-highest-grossing media franchise of all time, having generated over $90 billion in revenue as of 2020.
-                            </Card.Text>
-                        </Card.Body>
-                    </Card>
+                <Col className='mt-3'>
+                    <div className="card mb-3">
+                        <div className="row g-0">
+                            <div className="col-md-4  col-xl-3">
+                                <img src={require("../../images/poke4.webp")} className="img-fluid rounded-start" alt="Conjunto de Pokemon" />
+                            </div>
+                            <div className="col-md-8 col-xl-9">
+                                <div className="card-body">
+                                    <h5 className="card-title">What is Pokemon?</h5>
+                                    <p className="card-text">Pokémon (ポケモン, Pokemon?, [pokeːˈmon]) is a Japanese media franchise managed by The Pokémon Company, a company founded by Nintendo, Game Freak, and Creatures. The franchise was created by Satoshi Tajiri in 1995, and is centered on fictional creatures called "Pokémon", which humans, known as Pokémon Trainers, catch and train to battle each other for sport. The franchise has expanded into other media, including animated television shows, films, manga, trading card games, and video games. The Pokémon franchise is the second-highest-grossing media franchise of all time, having generated over $90 billion in revenue as of 2020.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </Col>
             </Row>
         </Container>

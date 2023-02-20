@@ -1,3 +1,6 @@
 h3{
     color: black;
 }
+.primeraMayus::first-letter{
+    text-transform: uppercase;
+}

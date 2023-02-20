@@ -1,0 +1,5 @@
+.altSign:hover{
+    cursor: pointer;
+    transition: 0.5s;
+    scale: 1.1;
+}

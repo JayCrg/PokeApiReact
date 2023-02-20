@@ -2,8 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { Carousel } from "react-bootstrap";
 import { Pagination } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import ListGroup from 'react-bootstrap/ListGroup';
 
-const ITEMS_PER_PAGE = 20;
+import './detalle.css';
+
+const ITEMS_PER_PAGE = 10;
 
 function PaginaDetalle(props) {
 
@@ -35,20 +38,20 @@ function PaginaDetalle(props) {
         return <p>Hubo un error</p>
     }
 
-    const handleClick = (page) => {
-        setCurrentPage(page);
+    const totalPages = Math.ceil(SinglePokemon.data.moves.length / ITEMS_PER_PAGE);
+    const range = 3;
+    const minPage = Math.max(1, currentPage - range);
+    const maxPage = Math.min(totalPages, currentPage + range);
+
+    const paginate = (pageNumber) => {
+        setCurrentPage(pageNumber);
     };
-    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-    const endIndex = startIndex + ITEMS_PER_PAGE;
-    const currentItems = SinglePokemon.data.moves.slice(startIndex, endIndex);
-    const pageNumbers = [];
-    for (let i = 1; i <= Math.ceil(SinglePokemon.data.moves.length / ITEMS_PER_PAGE); i++) {
-        pageNumbers.push(
-            <li key={i} className={`page-item ${i === currentPage ? 'active' : ''}`}>
-                <button className="page-link" onClick={() => handleClick(i)}>{i}</button>
-            </li>
-        );
-    }
+
+    const itemsToShow = SinglePokemon.data.moves.slice(
+        (currentPage - 1) * ITEMS_PER_PAGE,
+        currentPage * ITEMS_PER_PAGE
+    );
+
 
     return (
         <div className="card">
@@ -78,52 +81,58 @@ function PaginaDetalle(props) {
                         </Carousel.Item>
                     </Carousel>
                 </div>
-                <div className="col-6">
+                <div className="col-xl-4 col-md-6">
                     <div className="card-body">
                         <h1 className="card-title">Nº{SinglePokemon.data.id} {SinglePokemon.data.name.toUpperCase()}</h1>
                         {SinglePokemon.data.types.map((type, index) => (
-                            <span key={index}> <img src={require(`../../images/${type.type.name}.webp`)} alt={type.type.name} className="mt-2"></img> </span>
+                            <span key={index}> <img src={require(`../../images/${type.type.name}.webp`)}
+                            title={type.type.name} alt={type.type.name} className="mt-2"></img> </span>
                         ))}
                         <div className="card-text mt-3">
-                            <h4>Height: {SinglePokemon.data.height} m</h4>
-                            <h4>Weight: {SinglePokemon.data.weight} kg</h4>
+                            <h4>Height: {SinglePokemon.data.height/10} m</h4>
+                            <h4>Weight: {SinglePokemon.data.weight/10} kg</h4>
                             <h4>Abilities: {SinglePokemon.data.abilities.map((ability, index) => (
-                                <span key={index}>- {ability.ability.name} </span>
+                                <li className="primeraMayus" key={index}>{ability.ability.name} </li>
                             ))}</h4>
                         </div>
-                        <div>  
+                        <div className='mt-2'>
                             <h4>Moves:</h4>
-                            <ul>
-                                {currentItems.map(item => (
-                                    <li key={item.move.name}>{item.move.name}</li>
+                            <ListGroup>
+                                {itemsToShow.map((item) => (
+                                    <ListGroup.Item className='primeraMayus' key={item.move.name}>{item.move.name}</ListGroup.Item>
                                 ))}
-                            </ul>
-                            <nav>
-                                <ul className="pagination">
-                                    {pageNumbers}
-                                </ul>
-                            </nav>
+                            </ListGroup>
+                            <Pagination>
+                                <Pagination.First onClick={() => paginate(1)} />
+                                <Pagination.Prev
+                                    onClick={() => paginate(Math.max(1, currentPage - 1))}
+                                />
+                                {minPage > 1 && <Pagination.Ellipsis />}
+                                {[...Array(maxPage - minPage + 1)].map((a, index) => {
+                                    const pageNumber = minPage + index;
+                                    return (
+                                        <Pagination.Item
+                                            key={pageNumber}
+                                            active={pageNumber === currentPage}
+                                            onClick={() => paginate(pageNumber)}
+                                        >
+                                            {pageNumber}
+                                        </Pagination.Item>
+                                    );
+                                })}
+                                {maxPage < totalPages && <Pagination.Ellipsis />}
+                                <Pagination.Next
+                                    onClick={() => paginate(Math.min(totalPages, currentPage + 1))}
+                                />
+                                <Pagination.Last onClick={() => paginate(totalPages)} />
+                            </Pagination>
                         </div>
                     </div>
                 </div>
             </div>
-            <Pagination>
-      <Pagination.First />
-      <Pagination.Prev />
-      <Pagination.Item>{1}</Pagination.Item>
-      <Pagination.Ellipsis />
+            <>
 
-      <Pagination.Item>{10}</Pagination.Item>
-      <Pagination.Item>{11}</Pagination.Item>
-      <Pagination.Item active>{12}</Pagination.Item>
-      <Pagination.Item>{13}</Pagination.Item>
-      <Pagination.Item disabled>{14}</Pagination.Item>
-
-      <Pagination.Ellipsis />
-      <Pagination.Item>{20}</Pagination.Item>
-      <Pagination.Next />
-      <Pagination.Last />
-    </Pagination>
+            </>
         </div>
     )
 

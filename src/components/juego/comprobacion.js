@@ -20,25 +20,28 @@ function Comprobacion(props) {
     useEffect(() => setGenPokeInvitado(getGeneracion(props.invitado)), []);
     useEffect(() => tipos(), []);
 
+
     const [genPoke, setGenPokeBueno] = useState(1);
     const [genPokeInv, setGenPokeInvitado] = useState(1);
-    const [tipoPoke1, setTipoPoke] = useState([]);
-    const [tipoPoke2, setTipoPoke2] = useState([]);
-
+    const [tipoPoke1, setTipoPoke] = useState('');
+    const [tipoPoke2, setTipoPoke2] = useState('');
+    const [victoria, setVictoria] = useState(false);
+    
     const genImg = genPoke > genPokeInv ? up : genPoke < genPokeInv ? down : correct;
     const HeightImg = props.pokemon.height > props.invitado.height ? up : props.pokemon.height < props.invitado.height ? down : correct;
     const WeightImg = props.pokemon.weight > props.invitado.weight ? up : props.pokemon.weight < props.invitado.weight ? down : correct;
-
+    
+    const [arrayResultados, setArrayResultados] = useState([tipoPoke1, tipoPoke2, WeightImg, HeightImg, genImg]);
     function tipos(){
         if(props.pokemon.types.length == 2 && props.invitado.types.length == 2){
             if(props.pokemon.types[0].type.name === props.invitado.types[0].type.name)
-                setTipoPoke(correct);
+            setTipoPoke(correct);
             else
-                setTipoPoke(wrong);
+            setTipoPoke(wrong);
             if(props.pokemon.types[1].type.name === props.invitado.types[1].type.name)
-                setTipoPoke2(correct);
+            setTipoPoke2(correct);
             else
-                setTipoPoke2(wrong);
+            setTipoPoke2(wrong);
         }
         else if(props.pokemon.types.length == 1 && props.invitado.types.length == 1){
             if(props.pokemon.types[0].type.name === props.invitado.types[0].type.name){
@@ -52,26 +55,25 @@ function Comprobacion(props) {
         }
         else if(props.pokemon.types.length == 2 && props.invitado.types.length == 1){
             if(props.pokemon.types[0].type.name === props.invitado.types[0].type.name)
-                setTipoPoke(correct);
+            setTipoPoke(correct);
             else
-                setTipoPoke(wrong);
+            setTipoPoke(wrong);
             if(props.pokemon.types[1].type.name === props.invitado.types[0].type.name)
-                setTipoPoke2(correct);
+            setTipoPoke2(correct);
             else
-                setTipoPoke2(wrong);
+            setTipoPoke2(wrong);
         }
         else if(props.pokemon.types.length == 1 && props.invitado.types.length == 2){
             if(props.pokemon.types[0].type.name === props.invitado.types[0].type.name)
-                setTipoPoke(correct);
+            setTipoPoke(correct);
             else
-                setTipoPoke(wrong);
+            setTipoPoke(wrong);
             if(props.pokemon.types[0].type.name === props.invitado.types[1].type.name)
-                setTipoPoke2(correct);
+            setTipoPoke2(correct);
             else
-                setTipoPoke2(wrong);
+            setTipoPoke2(wrong);
         }
     }
-
     function getGeneracion(pokemon) {
         const genLimits = {
             1: { min: gen1, max: gen2 },
@@ -85,18 +87,28 @@ function Comprobacion(props) {
             9: { min: gen9 },
         };
         let generacion = null;
-
+        
         for (let i = 1; i <= 9; i++) {
             const { min, max } = genLimits[i];
-
+            
             if (pokemon.id >= min && (max === undefined || pokemon.id < max)) {
                 generacion = i;
             }
         }
         return generacion;
     }
-
+    
+    for (let items of arrayResultados) {
+        console.log(arrayResultados)
+        if (items != correct) {
+            setVictoria(false);
+            return
+        }
+    }
+    return setVictoria(true);
+    
     return(
+        <>
         <ul className="nav nav-pills nav-fill mt-3">
             <li className="nav-item col-2">
                 <img src={genImg} />
@@ -114,9 +126,17 @@ function Comprobacion(props) {
                 <img src={WeightImg} />
             </li>
             <li className="nav-item col-1">
-                    <h5>{props.invitado.name}</h5>
+                    <h5 className='primeraMayus'>{props.invitado.name}</h5>
                 </li>
          </ul> 
+         {victoria ?  <div className="alert alert-success" role="alert">
+            <h4 className="alert-heading">¡Has ganado!</h4>
+            <p>¡Enhorabuena! Has acertado todos los datos del pokemon.</p>
+            <hr />
+            <p className="mb-0">¡Vuelve a jugar!</p>
+        </div> : null
+        }
+        </>
     )
 }
 

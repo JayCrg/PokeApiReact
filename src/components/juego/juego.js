@@ -1,6 +1,7 @@
 //Huelga que no tengo ni idea de por qué se realizan dos veces las peticiones
 import React, { useState, useEffect } from 'react';
 import Comprobacion from './comprobacion';
+import { ListGroup } from 'react-bootstrap';
 
 function Juego() {
 
@@ -72,14 +73,14 @@ function Juego() {
     const className = `fa-solid fa-rotate-right ${hovered ? "fa-spin" : ""}`;
     ////////////////////////////
 
-    function cargarSinglePokemon(url, bueno=true) {
+    function cargarSinglePokemon(url, bueno = true) {
         fetch(url)
             .then(response => response.json())
             .then(escogido => {
-                if(bueno)
-                setPokemon({ escogido })
+                if (bueno)
+                    setPokemon({ escogido })
                 else
-                setArrayIntentos(arrayIntentos.concat(escogido));
+                    setArrayIntentos(arrayIntentos.concat(escogido));
                 setLoading(false);
             })
             .catch(error => {
@@ -108,7 +109,6 @@ function Juego() {
         if (inputPokemon.toLowerCase() === pokemon.escogido.name) {
             let url = listaPokemon.find(pokemon => pokemon.name === inputPokemon.toLowerCase()).url;
             cargarSinglePokemon(url, false);
-            console.log(arrayIntentos);
             setJuegoTerminado(true);
 
 
@@ -116,8 +116,7 @@ function Juego() {
             setIntentos(intentos - 1);
             let url = listaPokemon.find(pokemon => pokemon.name === inputPokemon.toLowerCase()).url;
             cargarSinglePokemon(url, false);
-            console.log(arrayIntentos);
-            if(intentos <= 1){
+            if (intentos <= 1) {
                 setJuegoTerminado(true);
             }
         }
@@ -135,8 +134,8 @@ function Juego() {
         <div className='container d-flex flex-column justify-content-center mt-5'>
             <div className='row '>
                 <h1 className='justify-self-center'>Guess the Pokemon</h1>
-                { juegoTerminado ?<input type="text" placeholder="Nombre del Pokemon" disabled className='col-7' value={inputPokemon} onChange={handleInputChange} onKeyDown={keyHandler}/>: <input type="text" placeholder="Nombre del Pokemon"  className='col-7' value={inputPokemon} onChange={handleInputChange} onKeyDown={keyHandler}/>}
-                {intentos <= 0 || !pokemonExiste ? <button className='col-3' disabled onClick={guardarItem}>Verificar</button> : <button className='col-3' onClick={guardarItem}>Verificar</button>}
+                {juegoTerminado ? <input type="text" placeholder="Write the name of a Pokemon" disabled className='col-7' value={inputPokemon} onChange={handleInputChange} onKeyDown={keyHandler} /> : <input type="text" placeholder="Nombre del Pokemon" className='col-7' value={inputPokemon} onChange={handleInputChange} onKeyDown={keyHandler} />}
+                {intentos <= 0 || !pokemonExiste ? <button className='col-3' disabled onClick={guardarItem}>Verify</button> : <button className='col-3' onClick={guardarItem}>Verify</button>}
                 <h4 className='col-2'>Intentos {intentos}  <span onClick={inicializarTodo} title="Resetear"><i className={className} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}></i></span></h4>
             </div>
             <ul className="nav nav-pills nav-fill mt-3">
@@ -159,10 +158,14 @@ function Juego() {
                     <h3>Name</h3>
                 </li>
             </ul>
-            {arrayIntentos.map((pokemonInvitado, index) => <Comprobacion key={index} pokemon={pokemon.escogido} invitado={pokemonInvitado}/>)}
+            {arrayIntentos.map((pokemonInvitado, index) => <Comprobacion key={index} pokemon={pokemon.escogido} invitado={pokemonInvitado} />)}
             {juegoTerminado ? <div className='row justify-content-center mt-5'>
-                <h1>El pokemon era {pokemon.escogido.name}</h1>
-                <img src={pokemon.escogido.sprites.front_default} alt={pokemon.escogido.name} />
+                <div className='col-6'>
+                    <h1>El pokemon era <span className='primeraMayus'>{pokemon.escogido.name}</span></h1>
+                    <div >
+                        <img src={pokemon.escogido.sprites.other['official-artwork'].front_default} alt={pokemon.escogido.name} />
+                    </div>
+                </div>
             </div> : <div></div>
             }
         </div>
